@@ -42,7 +42,7 @@ class Course(TypedDict):
     """
     Описание структуры курса.
     """
-    course_id: str
+    id: str
     title: str
     maxScore: int
     minScore: int
@@ -109,7 +109,7 @@ class CoursesClient(APIClient):
         """
         return self.delete(f"/api/v1/courses/{course_id}")
 
-    def create_course(self, request: CreateCourseRequestDict) -> Response:
+    def create_course(self, request: CreateCourseRequestDict) -> CreateCourseResponseDict:
         """
         Метод создания курса.
 
