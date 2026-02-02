@@ -1,8 +1,7 @@
 from typing import TypedDict
 
 from clients.api_client import APIClient
-from clients.private_http_builder import AuthenticationUserDict, get_private_http_client
-
+from clients.private_http_builder import AuthenticationUserSchema, get_private_http_client
 
 
 class Exercise(TypedDict):
@@ -96,7 +95,7 @@ class ExercisesClient(APIClient):
         :param request: Словарь со списком полей для создания курса
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.post("/api/v1/exercises", json=request)
+        return self.post("/api/v1/exercises", json=request.model_dump(by_alias=True))
 
     def update_exercise_api(self, exercise_id: str, request:UpdateExerciseRequestDict):
         """
@@ -107,7 +106,7 @@ class ExercisesClient(APIClient):
         :return: Ответ от сервера в виде объекта httpx.Response
         """
         return self.patch(f"/api/v1/exercises/{exercise_id}",
-                          json=request)
+                          json=request.model_dump(by_alias=True))
 
     def delete_exercise_api(self, exercise_id: str):
         """
@@ -159,7 +158,7 @@ class ExercisesClient(APIClient):
         return response.json()
 
 
-def get_exercises_client(user: AuthenticationUserDict) -> ExercisesClient:
+def get_exercises_client(user: AuthenticationUserSchema) -> ExercisesClient:
     """
     Фабричная функция для получения клиента заданий.
 
