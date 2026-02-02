@@ -62,7 +62,7 @@ class ExercisesClient(APIClient):
         :return: Ответ от сервера в виде объекта httpx.Response
         """
         response = self.get_exercise_api(exercise_id=exercise_id)
-        return response.json()
+        return GetExerciseResponseSchema.model_validate(response.text)
 
     def get_exercises(self, query: GetExercisesQuerySchema) -> GetExercisesResponseSchema:
         """
@@ -72,7 +72,7 @@ class ExercisesClient(APIClient):
         :return: Ответ от сервера в виде объекта httpx.Response
         """
         response = self.get_exercises_api(query=query)
-        return response.json()
+        return GetExercisesResponseSchema.model_validate(response.text)
 
     def create_exercise(self, request: CreateExerciseRequestSchema) -> CreateExerciseResponseSchema:
         """
@@ -82,7 +82,7 @@ class ExercisesClient(APIClient):
         :return: Ответ от сервера в виде объекта httpx.Response
         """
         response = self.create_exercise_api(request=request)
-        return response.json()
+        return CreateExerciseResponseSchema.model_validate_json(response.text)
 
     def update_exercise(self, exercise_id: str, request: UpdateExerciseRequestSchema) -> UpdateExerciseResponseSchema:
         """
@@ -92,7 +92,7 @@ class ExercisesClient(APIClient):
         :param request: Словарь со списком полей для обновления курса"""
         response = self.update_exercise_api(exercise_id=exercise_id,
                                             request=request)
-        return response.json()
+        return UpdateExerciseResponseSchema.model_validate_json(response.text)
 
 
 def get_exercises_client(user: AuthenticationUserSchema) -> ExercisesClient:
