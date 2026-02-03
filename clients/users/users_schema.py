@@ -1,15 +1,17 @@
 from pydantic import BaseModel, constr, Field, ConfigDict, EmailStr
 
+from tools import fake
+
 
 class CreateUserRequestSchema(BaseModel):
     """Схема на создание пользователя."""
     model_config = ConfigDict(populate_by_name=True)
 
-    email: EmailStr
-    password: str
-    last_name: constr(min_length=1, max_length=50) = Field(alias="lastName")
-    first_name: constr(min_length=1, max_length=50) = Field(alias="firstName")
-    middle_name: constr(min_length=1, max_length=50) = Field(alias="middleName")
+    email: EmailStr = Field(default_factory=fake.email)
+    password: str = Field(default_factory=fake.password)
+    last_name: constr(min_length=1, max_length=50) = Field(default_factory=fake.last_name, alias="lastName")
+    first_name: constr(min_length=1, max_length=50) = Field(default_factory=fake.first_name, alias="firstName")
+    middle_name: constr(min_length=1, max_length=50) = Field(default_factory=fake.middle_name, alias="middleName")
 
 
 class UserSchema(BaseModel):
@@ -37,9 +39,10 @@ class UpdateUserRequestSchema(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
     email: EmailStr | None
-    last_name: constr(min_length=1, max_length=50) | None = Field(alias="lastName")
-    first_name: constr(min_length=1, max_length=50) | None = Field(alias="firstName")
-    middle_name: constr(min_length=1, max_length=50) | None = Field(alias="middleName")
+    last_name: constr(min_length=1, max_length=50) | None = Field(default_factory=fake.last_name, alias="lastName")
+    first_name: constr(min_length=1, max_length=50) | None = Field(default_factory=fake.first_name(), alias="firstName")
+    middle_name: constr(min_length=1, max_length=50) | None = Field(default_factory=fake.middle_name(),
+                                                                    alias="middleName")
 
 
 class GetUserResponseSchema(BaseModel):
