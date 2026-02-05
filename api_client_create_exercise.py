@@ -10,12 +10,7 @@ from clients.users.users_schema import CreateUserRequestSchema
 
 public_user_client = get_public_user_client()
 
-create_user_request = CreateUserRequestSchema(
-    email="strу2rifrrr3fffng@bk.ru",
-    password="string",
-    last_name="string",
-    first_name="string",
-    middle_name="string")
+create_user_request = CreateUserRequestSchema()
 
 create_user_response = public_user_client.create_user(request=create_user_request)
 print('Create user data ', create_user_response)
@@ -27,35 +22,19 @@ authentication_user = AuthenticationUserSchema(
 
 files_client = get_files_client(user=authentication_user)
 
-create_file_request = CreateFileRequestSchema(
-    filename="example.txt",
-    directory="courses",
-    upload_file="./testdata/test_png.jpg"
-)
+create_file_request = CreateFileRequestSchema(upload_file="./testdata/test_png.jpg")
 create_file_response = files_client.create_file(request=create_file_request)
 print("Create file data:", create_file_response)
 
 courses_client = get_courses_client(user=authentication_user)
-create_course_request = CreateCourseRequestSchema(
-    title="New Course",
-    max_score=100,
-    min_score=0,
-    description="This is a new course.",
-    estimated_time="10 hours",
-    preview_file_id=create_file_response.file.id,
-    created_by_user_id=create_user_response.user.id)
+create_course_request = CreateCourseRequestSchema(preview_file_id=create_file_response.file.id,
+                                                  created_by_user_id=create_user_response.user.id)
 
 create_course_response = courses_client.create_course(request=create_course_request)
 print("Create course data:", create_course_response)
 
 
 exercises_client = get_exercises_client(user=authentication_user)
-create_exercise_request = CreateExerciseRequestSchema(
-    title="New Exercise",
-    course_id=create_course_response.course.id,
-    max_score=50,
-    min_score=0,
-    order_index=1,
-    estimated_time="2 hours")
+create_exercise_request = CreateExerciseRequestSchema(course_id=create_course_response.course.id)
 create_exercise_response = exercises_client.create_exercise(request=create_exercise_request)
 print("Create exercise data:", create_exercise_response)
