@@ -33,7 +33,7 @@ class UpdateCourseRequestSchema(BaseModel):
     """
     model_config = ConfigDict(populate_by_name=True)
 
-    title: str | None
+    title: str | None = Field(default_factory=fake.sentence)
     max_score: int = Field(alias="maxScore", default_factory=fake.max_score)
     min_score: int = Field(alias="minScore", default_factory=fake.min_score)
     description: str | None = Field(default_factory=fake.text)
