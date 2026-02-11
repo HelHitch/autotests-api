@@ -2,12 +2,16 @@ from http import HTTPStatus
 
 import pytest
 
+from clients.authentication.authentication_client import AuthenticationClient
+from clients.authentication.authentication_schema import LoginRequestSchema
+from clients.users.private_users_client import PrivateUsersClient
 from clients.users.public_users_client import PublicUsersClient
-from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema
+from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema, GetUserResponseSchema
+from tests.conftest import UserFixture
 from tools.assertions.base import assert_status_code
 from tools.assertions.schema import validate_json_schema
 # Импортируем функцию для проверки ответа создания юзера
-from tools.assertions.users import assert_create_user_response
+from tools.assertions.users import assert_create_user_response, assert_get_user_response
 
 
 @pytest.mark.users
@@ -22,3 +26,22 @@ def test_create_user(public_users_client: PublicUsersClient):
     assert_create_user_response(request, response_data)
 
     validate_json_schema(response.json(), response_data.model_json_schema())
+
+
+@pytest.mark.users
+@pytest.mark.regression
+def test_get_user_me(function_user: UserFixture,
+                     authentication_client: AuthenticationClient,
+                     private_users_client: PrivateUsersClient):
+    authentication_user = LoginRequestSchema(
+        email=function_user.email,
+        password=function_user.password
+    )
+    authentication_client.login_api(authentication_user)
+    response = private_users_client.get_user_me_api()
+    assert_status_code(actual=response.status_code, expected=HTTPStatus.OK)
+    response_user_model = GetUserResponseSchema.model_validate_json(response.text)
+    validate_json_schema(instance=response.json(),
+                         schema=response_user_model.model_json_schema())
+    assert_get_user_response(get_user_response=response_user_model,
+                             create_user_response=function_user.response)
