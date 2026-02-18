@@ -22,7 +22,7 @@ authentication_user = AuthenticationUserSchema(
 
 files_client = get_files_client(user=authentication_user)
 
-create_file_request = CreateFileRequestSchema(upload_file="./testdata/test_png.jpg")
+create_file_request = CreateFileRequestSchema(upload_file="testdata/files/test_png.jpg")
 create_file_response = files_client.create_file(request=create_file_request)
 print("Create file data:", create_file_response)
 
