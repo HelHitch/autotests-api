@@ -1,6 +1,7 @@
 from clients.errors_schema import InternalErrorResponseSchema
 from clients.exercises.exercises_schema import CreateExerciseRequestSchema, CreateExerciseResponseSchema, \
-    GetExerciseResponseSchema, ExerciseSchema, UpdateExerciseRequestSchema, UpdateExerciseResponseSchema
+    GetExerciseResponseSchema, ExerciseSchema, UpdateExerciseRequestSchema, UpdateExerciseResponseSchema, \
+    GetExercisesResponseSchema
 from tools.assertions.base import assert_equal
 from tools.assertions.errors import assert_internal_error_response
 
@@ -53,6 +54,18 @@ def assert_get_exercise_response(request: CreateExerciseRequestSchema, response:
     assert_equal(response.exercise.max_score, request.max_score, "max_score")
     assert_equal(response.exercise.min_score, request.min_score, "min_score")
     assert_equal(response.exercise.estimated_time, request.estimated_time, "estimated_time")
+
+
+def assert_get_exercises_response(request: ExerciseSchema, response: GetExercisesResponseSchema):
+    """
+    Проверяет, что данные в ответе на получение упражнений соответствуют данным из запроса.
+
+    :param request: Исходный запрос на создание упражнения.
+    :param response: Ответ API с данными полученного упражнения.
+    :raises AssertionError: Если хотя бы одно поле не совпадает.
+    """
+    for exercise in response.exercises:
+        assert_exercise(actual=exercise, expected=request)
 
 
 def assert_update_exercise_response(request: UpdateExerciseRequestSchema, response: UpdateExerciseResponseSchema):
