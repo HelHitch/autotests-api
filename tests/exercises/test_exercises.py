@@ -9,7 +9,7 @@ from clients.exercises.exercises_schema import CreateExerciseRequestSchema, Crea
     GetExercisesResponseSchema
 from fixtures.exercises import ExcerciseFixture
 from tools.assertions.base import assert_status_code
-from tools.assertions.exercises import assert_create_exercise_response, assert_get_exercise_response, assert_exercise, \
+from tools.assertions.exercises import assert_create_exercise_response, assert_get_exercise_response, \
     assert_update_exercise_response, assert_exercise_not_found_response, assert_get_exercises_response
 from tools.assertions.schema import validate_json_schema
 
@@ -33,8 +33,8 @@ class TestExercises:
         get_exercise_response = exercises_client.get_exercise_api(exercise_id=function_exercise.response.exercise.id)
         response_data = GetExerciseResponseSchema.model_validate_json(get_exercise_response.text)
         assert_status_code(get_exercise_response.status_code, HTTPStatus.OK)
-        assert_exercise(actual=function_exercise.response.exercise, expected=response_data.exercise)
-        assert_get_exercise_response(request=function_exercise.request, response=response_data)
+        assert_get_exercise_response(create_exercise_response=function_exercise.response,
+                                     get_exercise_response=response_data)
         validate_json_schema(get_exercise_response.json(), response_data.model_json_schema())
 
     def test_update_exercise(self,
