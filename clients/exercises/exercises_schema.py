@@ -56,7 +56,6 @@ class UpdateExerciseRequestSchema(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
     title: str | None = Field(default_factory=fake.sentence)
-    course_id: str | None = Field(alias="courseId", default_factory=fake.uuid4)
     max_score: int | None = Field(alias="maxScore", default_factory=fake.max_score)
     min_score: int | None = Field(alias="minScore", default_factory=fake.min_score)
     order_index: int | None = Field(alias="orderIndex", default_factory=lambda: fake.integer(1, 100))
@@ -68,7 +67,7 @@ class UpdateExerciseResponseSchema(BaseModel):
     """
     Описание структуры запроса на обновление задания.
     """
-    exercises: ExerciseSchema
+    exercise: ExerciseSchema
 
 
 class GetExercisesResponseSchema(BaseModel):
