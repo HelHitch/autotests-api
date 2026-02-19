@@ -61,3 +61,10 @@ class CreateCourseResponseSchema(BaseModel):
     Описание структуры ответа при создании курса.
     """
     course: CourseSchema
+
+
+class UpdateCourseResponseSchema(BaseModel):
+    """
+    Описание структуры ответа обновления курса.
+    """
+    course: CourseSchema

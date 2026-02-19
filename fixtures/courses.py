@@ -17,6 +17,7 @@ def courses_client(function_user: UserFixture) -> CoursesClient:
     return get_courses_client(user=function_user.authentication_user)
 
 
+@pytest.fixture
 def function_course(courses_client: CourseFixture,
                     function_user: UserFixture,
                     function_file: FileFixture) -> CourseFixture:

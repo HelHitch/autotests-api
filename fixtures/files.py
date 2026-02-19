@@ -23,6 +23,6 @@ def files_client(function_user: UserFixture) -> FilesClient:
 
 @pytest.fixture
 def function_file(files_client: UserFixture) -> FileFixture:
-    request = CreateFileRequestSchema(upload_file="./testdata/test_png.jpg")
+    request = CreateFileRequestSchema(upload_file="./testdata/files/test_png.jpg")
     response = files_client.create_file(request=request)
     return FileFixture(request=request, response=response)
