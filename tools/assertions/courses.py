@@ -1,8 +1,11 @@
+import allure
+
 from clients.courses.courses_schema import UpdateCourseRequestSchema, UpdateCourseResponseSchema, \
     CreateCourseRequestSchema, CreateCourseResponseSchema
 from tools.assertions.base import assert_equal
 
 
+@allure.step("Check update course response")
 def assert_create_course_response(
         request: CreateCourseRequestSchema,
         response: CreateCourseResponseSchema
@@ -21,6 +24,7 @@ def assert_create_course_response(
     assert_equal(response.course.estimated_time, request.estimated_time, "estimated_time")
 
 
+@allure.step("Check update course response")
 def assert_update_course_response(
         request: UpdateCourseRequestSchema,
         response: UpdateCourseResponseSchema
