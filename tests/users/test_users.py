@@ -24,11 +24,14 @@ from tools.assertions.users import assert_create_user_response, assert_get_user_
 @pytest.mark.regression
 @allure.tag(AllureTag.USERS, AllureTag.REGRESSION)
 @allure.epic(AllureEpic.LMS)
+@allure.parent_suite(AllureEpic.LMS)
 @allure.feature(AllureFeature.USERS)
+@allure.suite(AllureFeature.USERS)
 class TestUsers:
     @allure.title("Create user")
     @allure.tag(AllureTag.CREATE_ENTITY)
     @allure.story(AllureStory.CREATE_ENTITY)
+    @allure.sub_suite(AllureStory.CREATE_ENTITY)
     @pytest.mark.parametrize("email", ["mail.ru", "gmail.com", "example.com"])
     def test_create_user(self, public_users_client: PublicUsersClient, email: str):
         request = CreateUserRequestSchema(email=fake.email(domain=email))
@@ -46,6 +49,7 @@ class TestUsers:
     @allure.title("Get user me")
     @allure.tag(AllureTag.GET_ENTITY)
     @allure.story(AllureStory.GET_ENTITY)
+    @allure.sub_suite(AllureStory.GET_ENTITY)
     def test_get_user_me(self, function_user: UserFixture,
                          authentication_client: AuthenticationClient,
                          private_users_client: PrivateUsersClient):
