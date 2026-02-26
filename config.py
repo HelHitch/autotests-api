@@ -1,0 +1,27 @@
+# config.py
+from pydantic import BaseModel, HttpUrl, FilePath
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class HTTPClientConfig(BaseModel):
+    timeout: int
+    url: HttpUrl
+
+    @property
+    def client_url(self) -> str:
+        return str(self.url)
+
+
+class TestDataConfig(BaseModel):
+    image_png_file: FilePath
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env",
+                                      env_file_encoding="utf-8",
+                                      env_nested_delimiter=".")
+    http_client: HTTPClientConfig
+    test_data: TestDataConfig
+
+
+settings = Settings()
