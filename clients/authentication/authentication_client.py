@@ -4,11 +4,12 @@ from httpx import Response
 from clients.api_client import APIClient
 from clients.authentication.authentication_schema import LoginRequestSchema, RefreshRequestSchema, LoginResponseSchema
 from clients.public_http_builder import get_public_http_client  # Импортируем builder
+from tools.routes import APIRoutes
 
 
 class AuthenticationClient(APIClient):
     """
-    Клиент для работы с /api/v1/authentication
+    Клиент для работы с {APIRoutes.AUTHENTICATION}
     """
 
     @allure.step("Authenticate user")
@@ -19,7 +20,7 @@ class AuthenticationClient(APIClient):
         :param request: Словарь с email и password.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.post("/api/v1/authentication/login", json=request.model_dump(by_alias=True))
+        return self.post(f"{APIRoutes.AUTHENTICATION}/login", json=request.model_dump(by_alias=True))
 
     @allure.step("Refresh authentication token")
     def refresh_api(self, request: RefreshRequestSchema) -> Response:
@@ -29,7 +30,7 @@ class AuthenticationClient(APIClient):
         :param request: Словарь с refreshToken.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.post("/api/v1/authentication/refresh", json=request.model_dump(by_alias=True))
+        return self.post(f"{APIRoutes.AUTHENTICATION}/refresh", json=request.model_dump(by_alias=True))
 
     def login(self, request: LoginRequestSchema) -> LoginResponseSchema:
         response = self.login_api(request)  # Отправляем запрос на аутентификацию
