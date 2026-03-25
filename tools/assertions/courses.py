@@ -3,9 +3,12 @@ import allure
 from clients.courses.courses_schema import UpdateCourseRequestSchema, UpdateCourseResponseSchema, \
     CreateCourseRequestSchema, CreateCourseResponseSchema
 from tools.assertions.base import assert_equal
+from tools.logger import get_logger
+
+logger = get_logger("COURSES_ASSERTIONS")
 
 
-@allure.step("Check update course response")
+@allure.step("Check create course response")
 def assert_create_course_response(
         request: CreateCourseRequestSchema,
         response: CreateCourseResponseSchema
@@ -17,6 +20,7 @@ def assert_create_course_response(
     :param response: Ответ API с созданными данными курса.
     :raises AssertionError: Если хотя бы одно поле не совпадает.
     """
+    logger.info("Check create course response")
     assert_equal(response.course.title, request.title, "title")
     assert_equal(response.course.max_score, request.max_score, "max_score")
     assert_equal(response.course.min_score, request.min_score, "min_score")
@@ -36,6 +40,7 @@ def assert_update_course_response(
     :param response: Ответ API с обновленными данными курса.
     :raises AssertionError: Если хотя бы одно поле не совпадает.
     """
+    logger.info("Check update course response")
     if request.title is not None:
         assert_equal(response.course.title, request.title, "title")
 
